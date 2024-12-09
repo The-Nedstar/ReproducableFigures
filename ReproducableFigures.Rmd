@@ -49,7 +49,7 @@ write.csv(penguins_clean, here("data","penguins_clean.csv"))
 
 ```{r bad figure code, echo=FALSE}
 
-
+#ugly 3d graph
 scatter3D(penguins_clean$sample_number, penguins_clean$body_mass_g, penguins_clean$flipper_length_mm, colvar = penguins_clean$flipper_length_mm, col = NULL, pch = 19, cex = 0.5)
 
 ```
