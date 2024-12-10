@@ -40,14 +40,12 @@ scatterplot <- function(Data, Xaxis, Xtitle, Yaxis, Ytitle, Col, Ctitle, Title,
   plot <- ggplot(Data, aes(x = Xaxis, y = Yaxis, colour = Col)) +
     geom_point(size = 0.8) +
     (if (Stat == TRUE) { 
-      geom_smooth(data =  subset(Data, species != "Chinstrap"), method = "lm", aes(x = flipper_length_mm, y = body_mass_g), 
-                  se = FALSE, linetype = "solid", 
-                  colour = "black") 
+      geom_smooth(data =  Chin, method = "lm", aes(x = flipper_length_mm, y = body_mass_g), 
+                  se = FALSE, linetype = "solid", size = 3, colour = "black") 
     }) +
     (if (Stat == TRUE) { 
-      geom_smooth(data = subset(Data, species == "Chinstrap"), method = "lm", aes(x = flipper_length_mm, y = body_mass_g,group = 1), 
-                  se = FALSE, linetype = "solid", 
-                  colour = "#606060") 
+      geom_smooth(data = Others, method = "lm", aes(x = flipper_length_mm, y = body_mass_g,group = 1), 
+                  se = FALSE, linetype = "solid", colour = "#606060") 
     }) +
     scale_y_break(c(100, 150), space = 0, scale = 5) +
     theme_bw() +
