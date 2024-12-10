@@ -57,7 +57,6 @@ scatterplot <- function(Data, Xaxis, Xtitle, Yaxis, Ytitle, Col, Ctitle, Title,
                                     size = 16),
           legend.title = element_text(size = 14),
           legend.text = element_text(size = 12),
-          legend.position = c(0.0955, 0.853),
           legend.background = element_rect(fill = "white", colour = NA),
           legend.box.background = element_rect(color = "black", size = 0.5)
           ) + 
