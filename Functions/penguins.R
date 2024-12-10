@@ -34,11 +34,18 @@ scatterplot <- function(Data, Xaxis, Xtitle, Yaxis, Ytitle, Col, Ctitle, Title,
   species_colours <- c("Adelie" = "darkorange",
                        "Chinstrap" = "purple",
                        "Gentoo" = "cyan4")
+  Chin <- Data %>% filter(species == "Chinstrap")
+  Others <- Data %>% filter(species %in% c("Adelie","Gentoo"))
 
   plot <- ggplot(Data, aes(x = Xaxis, y = Yaxis, colour = Col)) +
     geom_point(size = 0.8) +
     (if (Stat == TRUE) { 
-      geom_smooth(method = "lm", aes(group = 1), 
+      geom_smooth(data =  subset(Data, species != "Chinstrap"), method = "lm", aes(x = flipper_length_mm, y = body_mass_g), 
+                  se = FALSE, linetype = "solid", 
+                  colour = "black") 
+    }) +
+    (if (Stat == TRUE) { 
+      geom_smooth(data = subset(Data, species == "Chinstrap"), method = "lm", aes(x = flipper_length_mm, y = body_mass_g,group = 1), 
                   se = FALSE, linetype = "solid", 
                   colour = "#606060") 
     }) +

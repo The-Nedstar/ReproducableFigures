@@ -235,9 +235,58 @@ summary(Model)
 
 -   very strong linear relationship between body mass and flipper length
 
--   for the same body mass they appear to all have the same flipper length
+-   for the same body mass they appear to all have the same flipper length for the points in the graph
 
--   however, there is a specific difference between that of chistrap and adelaide
+-   however, there is a specific difference between that of chinstrap to the others in the relationship
+
+```{r Investigating others}
+Others_MVF <- penguins_MVF %>% filter(species %in% c("Adelie","Gentoo"))
+# statistical test
+OthersModel <- lm(flipper_length_mm ~ body_mass_g + species + 
+              body_mass_g*species, data = Others_MVF)
+# Make sure your code prints
+svglite(here("Figures", "Others model plot.svg"), width = 10,
+          height = 8,
+          scaling = 1.3)
+par(mfrow=c(2,2))
+DiaPlots <- (plot(OthersModel,1) | plot(OthersModel,2)) / (plot(OthersModel,3) | plot(OthersModel,5))
+dev.off()
+
+
+```
+
+![](Figures/Others model plot.svg){width="466"}
+
+```{r}
+summary(OthersModel)
+```
+
+-   both agree on this thingy here
+
+```{r Investigating Chinstrap}
+Chin_MVF <- penguins_MVF %>% filter(species == "Chinstrap")
+# statistical test
+ChinModel <- lm(flipper_length_mm ~ body_mass_g, data = Chin_MVF)
+# Make sure your code prints
+svglite(here("Figures", "Chinstrap model plot.svg"), width = 10,
+          height = 8,
+          scaling = 1.3)
+par(mfrow=c(2,2))
+DiaPlots <- (plot(ChinModel,1) | plot(ChinModel,2)) / (plot(ChinModel,3) | plot(ChinModel,5))
+dev.off()
+```
+
+![](Figures/Chinstrap model plot.svg)
+
+None of them are as good, but a much smaller sample, and overall still fine
+
+```{r}
+summary(ChinModel)
+```
+
+-   chin can also be shown with a significant realtionships
+
+-   although differeent
 
 ### Results & Discussion
 
@@ -248,10 +297,12 @@ scatterplot(penguins_MVF, penguins_MVF$body_mass_g,
                        penguins_MVF$flipper_length_mm, 
                        "Flipper Length (mm)", penguins_MVF$species, 
                        "Species", "Body Mass vs Flipper Length", 
-                       FALSE, "Exploratory plot.svg", 5, 7, 1)
+                       TRUE, "Results plot.svg", 5, 7, 1)
 # Make sure your code prints. 
 
 ```
+
+![](Figures/Results plot.svg)
 
 ### Conclusion
 
@@ -265,7 +316,7 @@ scatterplot(penguins_MVF, penguins_MVF$body_mass_g,
 
 *GitHub link:*
 
-[https://github.com/The-Nedstar/ReproducableFigures](https://github.com/The-Nedstar/ReproducableFigures/tree/Dev){.uri}
+<https://github.com/The-Nedstar/ReproducableFigures>
 
 *You will be marked on your repo organisation and readability.*
 
