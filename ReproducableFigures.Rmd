@@ -18,12 +18,15 @@ library(ragg)
 library(svglite)
 library(plot3D)
 
+#loading custom functions
+source(here("Functions", "cleaning.R"))
+source(here("Functions", "plotting.R"))
+source(here("Functions", "penguins.R"))
+
+# loading data
 write.csv(penguins_raw, here("Data","penguins_raw.csv"))
 
-penguins_clean <- penguins_raw %>% 
-  select(-Comments) %>% 
-  select(-starts_with("Delta")) %>% 
-  clean_names()
+penguins_clean <- cleaning(penguins_raw,c("Comments", "Delta"))
 
 write.csv(penguins_clean, here("data","penguins_clean.csv"))
 ```
@@ -49,24 +52,71 @@ write.csv(penguins_clean, here("data","penguins_clean.csv"))
 
 ```{r bad figure code, echo=FALSE}
 
-#ugly 3d graph
-scatter3D(penguins_clean$sample_number, penguins_clean$body_mass_g, penguins_clean$flipper_length_mm, colvar = penguins_clean$flipper_length_mm, col = NULL, pch = 19, cex = 0.5)
-
+svglite(here("Figures", "Ugly graph.svg"), width = 5,
+          height = 5,
+          scaling = 1
+        )
+  scatter3D(penguins_clean$sample_number, penguins_clean$body_mass_g,
+            penguins_clean$flipper_length_mm, 
+            colvar = penguins_clean$culmen_depth_mm, 
+            pch = 19, cex = 0.5, clab = "Culmen depth", 
+            xlab = "sample number",ylab = "Body mass", 
+            zlab = "flipper length", 
+            colkey = list(side = 4, plot = TRUE, 
+                          length = 0.5, width = 1, dist = -0.25,
+                          shift = 0, addlines = FALSE, 
+                          col.clab = NULL, cex.clab = par("cex.lab"),
+                          side.clab = NULL, line.clab = NULL, 
+                          adj.clab = NULL, font.clab = NULL)
+            )
+  dev.off()
 ```
+
+![Figure 1: example of a bad graph](Figures/Ugly graph.svg)
 
 ### b) Write about how your design choices mislead the reader about the underlying data (200-300 words).
 
 *Include references.*
 
--   axis not starting at 0
+-   axis not starting at 0 (even though can't see
+
+    -   can exagerrate relationships
+
+    -   obscures truth
+
+    -   all 3 axis on different scales
 
 -   legend covering up the graph
 
 -   too much data
 
+    -   2 different relationships being shown, can't see either clearly at all
+
+    -   plotting the sample number that gives no information whatsoever
+
 -   hard to read
 
--   3d if possible?
+    -   no grid lines
+
+    -   3 dimensional makes it impossible
+
+    -   using colours can't get quantitative view of
+
+    -   bad for colour blind people
+
+    -   very small
+
+-   labels
+
+    -   no title
+
+    -   no axis points
+
+    -   overlapping text
+
+    -   text at strange angles which is hard to read
+
+    -   no
 
 ------------------------------------------------------------------------
 
@@ -122,18 +172,33 @@ scatter3D(penguins_clean$sample_number, penguins_clean$body_mass_g, penguins_cle
 
 ### Introduction
 
-```{r Data Exploration}
+```{r Data Exploration, warning=FALSE, message=FALSE}
+#loading, cleaning and saving data
+write.csv(penguins_raw, here("Data", "penguins_raw.csv"))
 
-# Make sure your code prints. 
+penguins_clean <- cleaning(penguins_raw, c("Comments", "Delta"))
+
+write.csv(penguins_clean, here("data", "penguins_clean.csv"))
+
+#explorative plot and save
+
+ExpPlot <- scatterplot(penguins_clean, penguins_clean$body_mass_g, 
+                       "Body Mass (g)", 
+                       penguins_clean$flipper_length_mm, 
+                       "Flipper Length (mm)", penguins_clean$species, 
+                       "Species", "Body Mass vs Flipper Length", 
+                       FALSE, "Exploratory plot.svg", 5, 7, 1)
 
 ```
+
+![](Figures/Exploratory plot.svg)
 
 ### Hypothesis
 
 ### Statistical Methods
 
 ```{r Statistics}
-
+# statistical test
 # Make sure your code prints. 
 
 ```
@@ -141,7 +206,7 @@ scatter3D(penguins_clean$sample_number, penguins_clean$body_mass_g, penguins_cle
 ### Results & Discussion
 
 ```{r Plotting Results}
-
+#plot results and save
 # Make sure your code prints. 
 
 ```
@@ -157,6 +222,8 @@ scatter3D(penguins_clean$sample_number, penguins_clean$body_mass_g, penguins_cle
 *Upload your RProject you created for **Question 2** and any files and subfolders used to GitHub. Do not include any identifiers such as your name. Make sure your GitHub repo is public.*
 
 *GitHub link:*
+
+[https://github.com/The-Nedstar/ReproducableFigures](https://github.com/The-Nedstar/ReproducableFigures/tree/Dev){.uri}
 
 *You will be marked on your repo organisation and readability.*
 
