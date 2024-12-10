@@ -184,11 +184,15 @@ penguins_clean <- cleaning(penguins_raw, c("Comments", "Delta"))
 write.csv(penguins_clean, here("data", "penguins_clean.csv"))
 
 #explorative plot and save
+penguins_MVF <- penguins_clean %>% drop_na(body_mass_g,
+                                           flipper_length_mm,
+                                           species)
+write.csv(penguins_MVF, here("data", "penguins_MVF.csv"))
 
-ExpPlot <- scatterplot(penguins_clean, penguins_clean$body_mass_g, 
+scatterplot(penguins_MVF, penguins_MVF$body_mass_g, 
                        "Body Mass (g)", 
-                       penguins_clean$flipper_length_mm, 
-                       "Flipper Length (mm)", penguins_clean$species, 
+                       penguins_MVF$flipper_length_mm, 
+                       "Flipper Length (mm)", penguins_MVF$species, 
                        "Species", "Body Mass vs Flipper Length", 
                        FALSE, "Exploratory plot.svg", 5, 7, 1)
 
@@ -196,20 +200,55 @@ ExpPlot <- scatterplot(penguins_clean, penguins_clean$body_mass_g,
 
 ![](Figures/Exploratory plot.svg)
 
+There appears to be a strong linear relationship between the values of Body mass and Flipper length. This appears to be consistent between the species. This analysis is going to compare the relationship between body mass and flipper length and whether the species affects this relationship.
+
 ### Hypothesis
 
 ### Statistical Methods
 
 ```{r Statistics}
 # statistical test
-# Make sure your code prints. 
-
+Model <- lm(flipper_length_mm ~ body_mass_g + species + 
+              body_mass_g*species, data = penguins_MVF)
+# Make sure your code prints
+svglite(here("Figures", "Diagnostic Plots.svg"), width = 10,
+          height = 8,
+          scaling = 1.3)
+par(mfrow=c(2,2))
+DiaPlots <- (plot(Model,1) | plot(Model,2)) / (plot(Model,3) | plot(Model,5))
+dev.off()
 ```
+
+![](Figures/Diagnostic Plots.svg){width="660"}
+
+-   Residuals appear to be all random (2 groups caused by a lack of data for those values
+
+-   looks very normally distributed
+
+-   no particular;y bad outliers
+
+-   all very good and suitable
+
+```{r}
+summary(Model)
+```
+
+-   very strong linear relationship between body mass and flipper length
+
+-   for the same body mass they appear to all have the same flipper length
+
+-   however, there is a specific difference between that of chistrap and adelaide
 
 ### Results & Discussion
 
 ```{r Plotting Results}
 #plot results and save
+scatterplot(penguins_MVF, penguins_MVF$body_mass_g, 
+                       "Body Mass (g)", 
+                       penguins_MVF$flipper_length_mm, 
+                       "Flipper Length (mm)", penguins_MVF$species, 
+                       "Species", "Body Mass vs Flipper Length", 
+                       FALSE, "Exploratory plot.svg", 5, 7, 1)
 # Make sure your code prints. 
 
 ```
