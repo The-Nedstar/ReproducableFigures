@@ -36,12 +36,13 @@ scatterplot <- function(Data, Xaxis, Xtitle, Yaxis, Ytitle, Col, Ctitle, Title,
                        "Gentoo" = "cyan4")
 
   plot <- ggplot(Data, aes(x = Xaxis, y = Yaxis, colour = Col)) +
-    geom_point(size = 0.6) +
+    geom_point(size = 0.8) +
     (if (Stat == TRUE) { 
       geom_smooth(method = "lm", aes(group = 1), 
                   se = FALSE, linetype = "solid", 
                   colour = "#606060") 
     }) +
+    scale_y_break(c(100, 150), space = 0, scale = 5) +
     theme_bw() +
     theme(axis.text.y   = element_text(size = 12, color = "black"),
           axis.text.x   = element_text(size = 12, color = "black", 
@@ -56,17 +57,17 @@ scatterplot <- function(Data, Xaxis, Xtitle, Yaxis, Ytitle, Col, Ctitle, Title,
                                     size = 16),
           legend.title = element_text(size = 14),
           legend.text = element_text(size = 12),
-          legend.position = c(0.95, 0.855),
-          legend.box.background = element_rect(color = "black", size = 1),
-          legend.background = element_rect(fill = "white", color = NA)
+          legend.position = c(0.0955, 0.853),
+          legend.background = element_rect(fill = "white", colour = NA),
+          legend.box.background = element_rect(color = "black", size = 0.5)
           ) + 
     scale_colour_manual(values = species_colours) +
     xlab(Xtitle) +
     ylab(Ytitle) +
     labs(colour = Ctitle) +
     ggtitle(Title) +
-    xlim(0,7000) +
-    ylim(0,300)
+    xlim(0,6500) +
+    ylim(0,250)
   svglite(here("Figures", file), width = Width,
           height = Height,
           scaling = Scaling)

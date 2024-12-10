@@ -9,6 +9,8 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## Initialization
+
 ```{r loading of packages and data, warning=FALSE,message=FALSE}
 library(tidyverse)
 library(here)
@@ -17,6 +19,7 @@ library(janitor)
 library(ragg)
 library(svglite)
 library(plot3D)
+library(ggbreak)
 
 #loading custom functions
 source(here("Functions", "cleaning.R"))
