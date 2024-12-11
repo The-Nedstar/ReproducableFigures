@@ -18,6 +18,7 @@ renv::snapshot()
 
 ```{r loading of packages and data, warning=FALSE, message=FALSE}
 # loading of premade R packages
+renv::restore()
 library(tidyverse)
 library(here)
 library(palmerpenguins)
@@ -68,7 +69,8 @@ svglite(here("Figures", "Ugly graph.svg"), width = 5,
           scaling = 1
         )
 # Ugly, hard to follow code, with no breaking up or annotations just to rub in how terrible this is, this feels illegal
-scatter3D(penguins_clean$sample_number, penguins_clean$body_mass_g,log(penguins_clean$flipper_length_mm), colvar = penguins_clean$culmen_depth_mm, pch = 19, cex = 0.5, clab = "Culmen depth", xlab = "sample number",ylab = "Body mass", zlab = "flipper length", colkey = list(side = 4, plot = TRUE, length = 0.5, width = 1, dist = -0.25,shift = 0, addlines = FALSE, col.clab = NULL, cex.clab = par("cex.lab"),side.clab = NULL, line.clab = NULL, adj.clab = NULL, font.clab = NULL)
+scatter3D(penguins_clean$sample_number, penguins_clean$body_mass_g,log(penguins_clean$flipper_length_mm), colvar = penguins_clean$culmen_depth_mm, pch = 19, cex = 0.5, clab = "Culmen depth", xlab = "sample number",ylab = "Body mass", zlab = "flipper length", colkey = list(side = 4, plot = TRUE, length = 0.5, width = 1, dist = -0.25,shift = 0, addlines = FALSE, col.clab = NULL, cex.clab = par("cex.lab"),side.clab = NULL, line.clab = NULL, adj.clab = NULL, font.clab = NULL),
+          bg.col = "white"
             )
   dev.off()
 ```
@@ -172,6 +174,23 @@ scatter3D(penguins_clean$sample_number, penguins_clean$body_mass_g,log(penguins_
 *Below is a template you can use.*
 
 ------------------------------------------------------------------------
+
+```{r initialisation}
+renv::restore()
+library(tidyverse)
+library(here)
+library(palmerpenguins)
+library(janitor)
+library(ragg)
+library(svglite)
+library(plot3D)
+library(ggbreak)
+
+# loading custom functions
+source(here("Functions", "cleaning.R"))
+source(here("Functions", "plotting.R"))
+source(here("Functions", "penguins.R"))
+```
 
 ### Introduction
 
