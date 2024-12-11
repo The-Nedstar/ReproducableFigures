@@ -60,7 +60,7 @@ svglite(here("Figures", "Ugly graph.svg"), width = 5,
           scaling = 1
         )
   scatter3D(penguins_clean$sample_number, penguins_clean$body_mass_g,
-            penguins_clean$flipper_length_mm, 
+            log(penguins_clean$flipper_length_mm), 
             colvar = penguins_clean$culmen_depth_mm, 
             pch = 19, cex = 0.5, clab = "Culmen depth", 
             xlab = "sample number",ylab = "Body mass", 
@@ -88,6 +88,8 @@ svglite(here("Figures", "Ugly graph.svg"), width = 5,
     -   obscures truth
 
     -   all 3 axis on different scales
+
+    -   log transform
 
 -   legend covering up the graph
 
@@ -297,12 +299,12 @@ scatterplot(penguins_MVF, penguins_MVF$body_mass_g,
                        penguins_MVF$flipper_length_mm, 
                        "Flipper Length (mm)", penguins_MVF$species, 
                        "Species", "Body Mass vs Flipper Length", 
-                       TRUE, "Results plot.svg", 5, 7, 1)
+                       TRUE, "Results plot.svg", 5, 8, 1.05)
 # Make sure your code prints. 
 
 ```
 
-![](Figures/Results plot.svg)
+![](Figures/Results plot.svg){width="671"}
 
 ### Conclusion
 

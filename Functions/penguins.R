@@ -31,21 +31,27 @@ cleaning <- function(Dataset, column_names){
 ### a function to create a scatterplot, for both exploratory and statistic purposes
 scatterplot <- function(Data, Xaxis, Xtitle, Yaxis, Ytitle, Col, Ctitle, Title, 
                         Stat,  file, Height, Width, Scaling){
-  species_colours <- c("Adelie" = "darkorange",
-                       "Chinstrap" = "purple",
-                       "Gentoo" = "cyan4")
+  
+  species <- c("Adelie","Chinstrap", "Gentoo", "Chinstrap regression",
+               "Others regression")
+  cols <- c("darkorange","purple","cyan4","black","#A20000")
+  
   Chin <- Data %>% filter(species == "Chinstrap")
   Others <- Data %>% filter(species %in% c("Adelie","Gentoo"))
+  write.csv(Chin, here("Data","Chin.csv"))
+  write.csv(Others, here("Data","Others.csv"))
 
   plot <- ggplot(Data, aes(x = Xaxis, y = Yaxis, colour = Col)) +
     geom_point(size = 0.8) +
     (if (Stat == TRUE) { 
-      geom_smooth(data =  Chin, method = "lm", aes(x = flipper_length_mm, y = body_mass_g), 
-                  se = FALSE, linetype = "solid", size = 3, colour = "black") 
+      geom_smooth(data =  Chin, method = "lm", aes(x = body_mass_g, y = flipper_length_mm, 
+                                                   colour = "Chinstrap regression"), 
+                  se = FALSE, linetype = "solid", size = 1.5) 
     }) +
     (if (Stat == TRUE) { 
-      geom_smooth(data = Others, method = "lm", aes(x = flipper_length_mm, y = body_mass_g,group = 1), 
-                  se = FALSE, linetype = "solid", colour = "#606060") 
+      geom_smooth(data = Others, method = "lm", aes(x = body_mass_g, y = flipper_length_mm,
+                                                    group = 1, colour = "Others regression"), 
+                  se = FALSE, linetype = "solid",size = 1.5) 
     }) +
     scale_y_break(c(100, 150), space = 0, scale = 5) +
     theme_bw() +
@@ -61,11 +67,11 @@ scatterplot <- function(Data, Xaxis, Xtitle, Yaxis, Ytitle, Col, Ctitle, Title,
           plot.title = element_text(hjust = 0.02, vjust = 0.1,
                                     size = 16),
           legend.title = element_text(size = 14),
-          legend.text = element_text(size = 12),
+          legend.text = element_text(size = 11),
           legend.background = element_rect(fill = "white", colour = NA),
           legend.box.background = element_rect(color = "black", size = 0.5)
           ) + 
-    scale_colour_manual(values = species_colours) +
+    scale_colour_manual(breaks =  species, values = cols) +
     xlab(Xtitle) +
     ylab(Ytitle) +
     labs(colour = Ctitle) +
