@@ -16,7 +16,7 @@ renv::update()
 renv::snapshot()
 ```
 
-```{r loading of packages and data, warning=FALSE,message=FALSE}
+```{r loading of packages and data, warning=FALSE, message=FALSE}
 # loading of premade R packages
 library(tidyverse)
 library(here)
