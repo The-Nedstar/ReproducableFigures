@@ -11,7 +11,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Initialization
 
+```{r RENV SAVING - DO NOT TOUCH, eval=FALSE}
+renv::update()
+renv::snapshot()
+```
+
 ```{r loading of packages and data, warning=FALSE,message=FALSE}
+# loading of premade R packages
 library(tidyverse)
 library(here)
 library(palmerpenguins)
@@ -21,12 +27,12 @@ library(svglite)
 library(plot3D)
 library(ggbreak)
 
-#loading custom functions
+# loading custom functions
 source(here("Functions", "cleaning.R"))
 source(here("Functions", "plotting.R"))
 source(here("Functions", "penguins.R"))
 
-# loading data
+# loading, cleaning and saving backups of Data
 write.csv(penguins_raw, here("Data","penguins_raw.csv"))
 
 penguins_clean <- cleaning(penguins_raw,c("Comments", "Delta"))
@@ -55,27 +61,19 @@ write.csv(penguins_clean, here("data","penguins_clean.csv"))
 
 ```{r bad figure code, echo=FALSE}
 
+### creation of quite possibly the worst graph known to man
+# setting up parameters for saving
 svglite(here("Figures", "Ugly graph.svg"), width = 5,
           height = 5,
           scaling = 1
         )
-  scatter3D(penguins_clean$sample_number, penguins_clean$body_mass_g,
-            log(penguins_clean$flipper_length_mm), 
-            colvar = penguins_clean$culmen_depth_mm, 
-            pch = 19, cex = 0.5, clab = "Culmen depth", 
-            xlab = "sample number",ylab = "Body mass", 
-            zlab = "flipper length", 
-            colkey = list(side = 4, plot = TRUE, 
-                          length = 0.5, width = 1, dist = -0.25,
-                          shift = 0, addlines = FALSE, 
-                          col.clab = NULL, cex.clab = par("cex.lab"),
-                          side.clab = NULL, line.clab = NULL, 
-                          adj.clab = NULL, font.clab = NULL)
+# Ugly, hard to follow code, with no breaking up or annotations just to rub in how terrible this is, this feels illegal
+scatter3D(penguins_clean$sample_number, penguins_clean$body_mass_g,log(penguins_clean$flipper_length_mm), colvar = penguins_clean$culmen_depth_mm, pch = 19, cex = 0.5, clab = "Culmen depth", xlab = "sample number",ylab = "Body mass", zlab = "flipper length", colkey = list(side = 4, plot = TRUE, length = 0.5, width = 1, dist = -0.25,shift = 0, addlines = FALSE, col.clab = NULL, cex.clab = par("cex.lab"),side.clab = NULL, line.clab = NULL, adj.clab = NULL, font.clab = NULL)
             )
   dev.off()
 ```
 
-![Figure 1: example of a bad graph](Figures/Ugly graph.svg)
+![Figure 1: a graph that shows things and stuff](Figures/Ugly graph.svg)
 
 ### b) Write about how your design choices mislead the reader about the underlying data (200-300 words).
 
@@ -121,7 +119,7 @@ svglite(here("Figures", "Ugly graph.svg"), width = 5,
 
     -   text at strange angles which is hard to read
 
-    -   no
+    -   unhelpful figure label
 
 ------------------------------------------------------------------------
 
@@ -178,23 +176,24 @@ svglite(here("Figures", "Ugly graph.svg"), width = 5,
 ### Introduction
 
 ```{r Data Exploration, warning=FALSE, message=FALSE}
-#loading, cleaning and saving data
+# loading, cleaning and saving data
 write.csv(penguins_raw, here("Data", "penguins_raw.csv"))
 
 penguins_clean <- cleaning(penguins_raw, c("Comments", "Delta"))
 
 write.csv(penguins_clean, here("data", "penguins_clean.csv"))
 
-#explorative plot and save
+# removing datapoints with NA values for the variables of interest
 penguins_MVF <- penguins_clean %>% drop_na(body_mass_g,
                                            flipper_length_mm,
                                            species)
 write.csv(penguins_MVF, here("data", "penguins_MVF.csv"))
 
+# creation and saving of explorative using a self made function in "penguins.R"
 scatterplot(penguins_MVF, penguins_MVF$body_mass_g, 
                        "Body Mass (g)", 
                        penguins_MVF$flipper_length_mm, 
-                       "Flipper Length (mm)", penguins_MVF$species, 
+                       "Flipper Length (mm)", penguins_MVF$species,
                        "Species", "Body Mass vs Flipper Length", 
                        FALSE, "Exploratory plot.svg", 5, 7, 1)
 
@@ -209,13 +208,15 @@ There appears to be a strong linear relationship between the values of Body mass
 ### Statistical Methods
 
 ```{r Statistics}
-# statistical test
+# Creation of a linear model includingcomparing flipper length to body mass, species and the interaction between the two
 Model <- lm(flipper_length_mm ~ body_mass_g + species + 
               body_mass_g*species, data = penguins_MVF)
-# Make sure your code prints
+ 
+# defining parameters for saving diagnostic plots
 svglite(here("Figures", "Diagnostic Plots.svg"), width = 10,
           height = 8,
           scaling = 1.3)
+# creation of multiplot
 par(mfrow=c(2,2))
 DiaPlots <- (plot(Model,1) | plot(Model,2)) / (plot(Model,3) | plot(Model,5))
 dev.off()
@@ -231,7 +232,8 @@ dev.off()
 
 -   all very good and suitable
 
-```{r}
+```{r Statistical analysis}
+# statistical analysis of the linear model
 summary(Model)
 ```
 
@@ -241,70 +243,28 @@ summary(Model)
 
 -   however, there is a specific difference between that of chinstrap to the others in the relationship
 
-```{r Investigating others}
-Others_MVF <- penguins_MVF %>% filter(species %in% c("Adelie","Gentoo"))
-# statistical test
-OthersModel <- lm(flipper_length_mm ~ body_mass_g + species + 
-              body_mass_g*species, data = Others_MVF)
-# Make sure your code prints
-svglite(here("Figures", "Others model plot.svg"), width = 10,
-          height = 8,
-          scaling = 1.3)
-par(mfrow=c(2,2))
-DiaPlots <- (plot(OthersModel,1) | plot(OthersModel,2)) / (plot(OthersModel,3) | plot(OthersModel,5))
-dev.off()
-
-
-```
-
-![](Figures/Others model plot.svg){width="466"}
-
-```{r}
-summary(OthersModel)
-```
-
--   both agree on this thingy here
-
-```{r Investigating Chinstrap}
-Chin_MVF <- penguins_MVF %>% filter(species == "Chinstrap")
-# statistical test
-ChinModel <- lm(flipper_length_mm ~ body_mass_g, data = Chin_MVF)
-# Make sure your code prints
-svglite(here("Figures", "Chinstrap model plot.svg"), width = 10,
-          height = 8,
-          scaling = 1.3)
-par(mfrow=c(2,2))
-DiaPlots <- (plot(ChinModel,1) | plot(ChinModel,2)) / (plot(ChinModel,3) | plot(ChinModel,5))
-dev.off()
-```
-
-![](Figures/Chinstrap model plot.svg)
-
-None of them are as good, but a much smaller sample, and overall still fine
-
-```{r}
-summary(ChinModel)
-```
-
--   chin can also be shown with a significant realtionships
-
--   although differeent
-
 ### Results & Discussion
 
-```{r Plotting Results}
-#plot results and save
+```{r Plotting Results, warning=FALSE, message=FALSE}
+# displaying the coefficient for the linear regression
+RegLines <- coef(Model)
+paste("Adelie and Gentoo: y =", round(RegLines[2], 4), "* x +", round(RegLines[1], 4))
+paste("Chinstrap: y =", round((RegLines[2] + RegLines[5]), 4), "* x +", round((RegLines[1] + RegLines[3]), 4))
+
+
+# create and save a plot of results
 scatterplot(penguins_MVF, penguins_MVF$body_mass_g, 
                        "Body Mass (g)", 
                        penguins_MVF$flipper_length_mm, 
                        "Flipper Length (mm)", penguins_MVF$species, 
                        "Species", "Body Mass vs Flipper Length", 
                        TRUE, "Results plot.svg", 5, 8, 1.05)
-# Make sure your code prints. 
 
 ```
 
 ![](Figures/Results plot.svg){width="671"}
+
+-   
 
 ### Conclusion
 
