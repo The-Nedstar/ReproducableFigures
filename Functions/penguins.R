@@ -31,18 +31,21 @@ cleaning <- function(Dataset, column_names){
 ### a function to create a scatterplot, for both exploratory and statistic purposes
 scatterplot <- function(Data, Xaxis, Xtitle, Yaxis, Ytitle, Col, Ctitle, Title, 
                         Stat,  file, Height, Width, Scaling){
-  
+  # Defining of the colours
   species <- c("Adelie","Chinstrap", "Gentoo", "Chinstrap regression",
                "Others regression")
   cols <- c("darkorange","purple","cyan4","black","#A20000")
   
+  # seperation of Chinstrap and Other data
   Chin <- Data %>% filter(species == "Chinstrap")
   Others <- Data %>% filter(species %in% c("Adelie","Gentoo"))
   write.csv(Chin, here("Data","Chin.csv"))
   write.csv(Others, here("Data","Others.csv"))
 
+  # creation of plot
   plot <- ggplot(Data, aes(x = Xaxis, y = Yaxis, colour = Col)) +
     geom_point(size = 0.8) +
+    # Plotting LM if requested by setting Stat to TRUE
     (if (Stat == TRUE) { 
       geom_smooth(data =  Chin, method = "lm", aes(x = body_mass_g, y = flipper_length_mm, 
                                                    colour = "Chinstrap regression"), 
@@ -53,7 +56,9 @@ scatterplot <- function(Data, Xaxis, Xtitle, Yaxis, Ytitle, Col, Ctitle, Title,
                                                     group = 1, colour = "Others regression"), 
                   se = FALSE, linetype = "solid",size = 1.5) 
     }) +
+    # creating the break in the y axis
     scale_y_break(c(100, 150), space = 0, scale = 5) +
+    # setting the theme
     theme_bw() +
     theme(axis.text.y   = element_text(size = 12, color = "black"),
           axis.text.x   = element_text(size = 12, color = "black", 
@@ -78,6 +83,7 @@ scatterplot <- function(Data, Xaxis, Xtitle, Yaxis, Ytitle, Col, Ctitle, Title,
     ggtitle(Title) +
     xlim(0,6500) +
     ylim(0,250)
+  # saving as an SVG
   svglite(here("Figures", file), width = Width,
           height = Height,
           scaling = Scaling)
