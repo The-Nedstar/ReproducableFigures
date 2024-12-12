@@ -30,7 +30,7 @@ cleaning <- function(Dataset, column_names){
 
 ### a function to create a scatterplot, for both exploratory and statistic purposes
 scatterplot <- function(Data, Xaxis, Xtitle, Yaxis, Ytitle, Col, Ctitle, Title, 
-                        Stat,  file, Height, Width, Scaling){
+                        Stat,  file, Height, Width, Res){
   # Defining of the colours
   species <- c("Adelie","Chinstrap", "Gentoo", "Chinstrap regression",
                "Others regression")
@@ -84,9 +84,9 @@ scatterplot <- function(Data, Xaxis, Xtitle, Yaxis, Ytitle, Col, Ctitle, Title,
     xlim(0,6500) +
     ylim(0,250)
   # saving as an SVG
-  svglite(here("Figures", file), width = Width,
-          height = Height,
-          scaling = Scaling)
+  png(here("Figures", file), width = Width,
+          height = Height, units = "cm",
+          res = Res)
   print(plot)
   dev.off()
 }

@@ -1011,6 +1011,6 @@
 <g clip-path='url(#cpMC4wMHw1NzYuMDB8MC4wMHwzNjAuMDA=)'>
 <text x='297.68' y='351.15' text-anchor='middle' style='font-size: 14.70px; font-family: "Arial";' textLength='94.69px' lengthAdjust='spacingAndGlyphs'>Body Mass (g)</text>
 <text transform='translate(16.27,180.98) rotate(-90)' text-anchor='middle' style='font-size: 14.70px; font-family: "Arial";' textLength='132.25px' lengthAdjust='spacingAndGlyphs'>Flipper Length (mm)</text>
-<text x='31.69' y='20.97' style='font-size: 16.80px; font-family: "Arial";' textLength='216.65px' lengthAdjust='spacingAndGlyphs'>Body Mass vs Flipper Length</text>
+<text x='28.90' y='20.97' style='font-size: 16.80px; font-family: "Arial";' textLength='355.80px' lengthAdjust='spacingAndGlyphs'>Linear regression: Body Mass vs Flipper Length</text>
 </g>
 </svg>
