@@ -3,21 +3,19 @@ title: "Reproducable figures assignment"
 output:
   html_document: default
   pdf_document: default
+bibliography: references.bib
+no cite: '@wickham2023r'
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Initialization
+## Initialization 
 
-```{r RENV SAVING - DO NOT TOUCH, eval=FALSE}
-renv::update()
-renv::snapshot()
-```
-
-```{r loading of packages and data, warning=FALSE,message=FALSE}
+```{r loading of packages and data, eval=TRUE, warning=FALSE, message=FALSE}
 # loading of premade R packages
+renv::restore()
 library(tidyverse)
 library(here)
 library(palmerpenguins)
@@ -61,65 +59,26 @@ write.csv(penguins_clean, here("data","penguins_clean.csv"))
 
 ```{r bad figure code, echo=FALSE}
 
-### creation of quite possibly the worst graph known to man
-# setting up parameters for saving
-svglite(here("Figures", "Ugly graph.svg"), width = 5,
-          height = 5,
-          scaling = 1
-        )
+### creation of quite possibly the worst graph known to humanity
+# setting up parameters for saving a beautiful crisp PNG
+png(filename = here("Figures", "Ugly graph.png"), 
+    width = 5, height = 5, units = "in", res = 80)
 # Ugly, hard to follow code, with no breaking up or annotations just to rub in how terrible this is, this feels illegal
-scatter3D(penguins_clean$sample_number, penguins_clean$body_mass_g,log(penguins_clean$flipper_length_mm), colvar = penguins_clean$culmen_depth_mm, pch = 19, cex = 0.5, clab = "Culmen depth", xlab = "sample number",ylab = "Body mass", zlab = "flipper length", colkey = list(side = 4, plot = TRUE, length = 0.5, width = 1, dist = -0.25,shift = 0, addlines = FALSE, col.clab = NULL, cex.clab = par("cex.lab"),side.clab = NULL, line.clab = NULL, adj.clab = NULL, font.clab = NULL)
-            )
+scatter3D(penguins_clean$sample_number, penguins_clean$body_mass_g,log(penguins_clean$flipper_length_mm), colvar = penguins_clean$culmen_depth_mm, pch = 19, cex = 0.5, clab = "Culmen depth", xlab = "sample number",ylab = "Body mass", zlab = "flipper length", colkey = list(side = 4, plot = TRUE, length = 0.5, width = 1, dist = -0.25,shift = 0, addlines = FALSE, col.clab = NULL, cex.clab = par("cex.lab"),side.clab = NULL, line.clab = NULL, adj.clab = NULL, font.clab = NULL), bg.col = "white", col.panel = "white")
   dev.off()
 ```
 
-![Figure 1: a graph that shows things and stuff](Figures/Ugly graph.svg)
+![Figure 1: A graph that shows stuff](Figures/Ugly%20graph.png){width="612"}
 
 ### b) Write about how your design choices mislead the reader about the underlying data (200-300 words).
 
 *Include references.*
 
--   axis not starting at 0 (even though can't see
+This monstrosity is plotting Flipper length against body mass but makes a lot of classic graph errors making it almost impossible to see what's going on. First of all, there is very little information given about the graph. There is no title, and the caption underneath also provides no information about what the graph shows. The axes are poorly labelled, with no units or axis points, making it almost meaningless. The text is also at strange angles and often overlapping making it very difficult to read. The data itself is also very hard to read.
 
-    -   can exagerrate relationships
+The graph is three-dimensional and has no gridlines making the locations of points impossible to judge on any of the axes. One of the Values is shown through colour, which is difficult again to get qualitative readouts from, and inaccessible to colour-blind people. The legend for this colour completely covers some data points as well. None of these axes start from zero, even though you can't see this, which could exaggerate some relationships. The flipper length variable is also unnecessarily log-transformed, yet again, this is not mentioned anywhere. There is also just far too much unnecessary data thrown into one graph. The culmen depth does not need to be there and only confuses the reader as to the relationship between flipper length and body mass. And sample number isn't a proper reading and also shouldn't be there.
 
-    -   obscures truth
-
-    -   all 3 axis on different scales
-
-    -   log transform
-
--   legend covering up the graph
-
--   too much data
-
-    -   2 different relationships being shown, can't see either clearly at all
-
-    -   plotting the sample number that gives no information whatsoever
-
--   hard to read
-
-    -   no grid lines
-
-    -   3 dimensional makes it impossible
-
-    -   using colours can't get quantitative view of
-
-    -   bad for colour blind people
-
-    -   very small
-
--   labels
-
-    -   no title
-
-    -   no axis points
-
-    -   overlapping text
-
-    -   text at strange angles which is hard to read
-
-    -   unhelpful figure label
+Finally, the graph is coded terribly. No annotations or splitting up of the code makes it very difficult to read and edit. There are lots of unnecessary bits of code making it inefficient. And it outputs a terrible, low-quality PNG as the icing on the cake making an already terrible graph even harder to see. I can only apologize for what I have produced.
 
 ------------------------------------------------------------------------
 
@@ -173,7 +132,28 @@ scatter3D(penguins_clean$sample_number, penguins_clean$body_mass_g,log(penguins_
 
 ------------------------------------------------------------------------
 
+```{r initialisation, eval=TRUE}
+renv::restore()
+library(tidyverse)
+library(here)
+library(palmerpenguins)
+library(janitor)
+library(ragg)
+library(svglite)
+library(plot3D)
+library(ggbreak)
+
+# loading custom functions
+source(here("Functions", "cleaning.R"))
+source(here("Functions", "plotting.R"))
+source(here("Functions", "penguins.R"))
+```
+
 ### Introduction
+
+There is likely to be a positive relationship between body mass and flipper length. However, This relationship could take many forms, being linear, logarithmic, exponential etc. This relationship may be universal between all penguin species, or may be different for each species.
+
+This analysis aims to understand the relationship between body mass and flipper length in multiple penguin species using the "Palmer Penguins" dataset. This data set contains 344 penguins from three species: Adelie, Chinstrap and Gentoo collected between 2007 and 2009 from the Palmer archipelago [@horst2022]. The Raw data is shown in Figure 1.
 
 ```{r Data Exploration, warning=FALSE, message=FALSE}
 # loading, cleaning and saving data
@@ -194,18 +174,28 @@ scatterplot(penguins_MVF, penguins_MVF$body_mass_g,
                        "Body Mass (g)", 
                        penguins_MVF$flipper_length_mm, 
                        "Flipper Length (mm)", penguins_MVF$species,
-                       "Species", "Body Mass vs Flipper Length", 
+                       "Species", "Body Mass vs Flipper Length in Three Penguin Species", 
                        FALSE, "Exploratory plot.svg", 5, 7, 1)
 
 ```
 
-![](Figures/Exploratory plot.svg)
+![](Figures/Exploratory%20plot.svg)
 
-There appears to be a strong linear relationship between the values of Body mass and Flipper length. This appears to be consistent between the species. This analysis is going to compare the relationship between body mass and flipper length and whether the species affects this relationship.
+From initial visualisation of the data, it appears that there is a strong linear correlation between the two variables with no variation between species.
 
 ### Hypothesis
 
+Our hypothesis is that there is a linear correlation between these two variables, and the relationship is the same between all three species in the dataset.
+
+To test this a multiple linear regression will be ran and an ANCOVA analysis with these hypotheses:
+
+H0: There is no relationship between body mass and flipper length (null model: y = 200.9152)
+
+H1: There is a linear relationship between body mass and flipper length, potentially varying between species (model as described by multiple linear regression)
+
 ### Statistical Methods
+
+First we created the multiple linear model and tested it's assumptions using the diagnostic plots in Figure 2.
 
 ```{r Statistics}
 # Creation of a linear model includingcomparing flipper length to body mass, species and the interaction between the two
@@ -222,33 +212,33 @@ DiaPlots <- (plot(Model,1) | plot(Model,2)) / (plot(Model,3) | plot(Model,5))
 dev.off()
 ```
 
-![](Figures/Diagnostic Plots.svg){width="660"}
+![Figure 2: Diagnostic plots for the linear model (flipper_length_mm \~ body_mass_g + species + body_mass_g\*species)](Figures/Diagnostic%20Plots.svg){width="660"}
 
--   Residuals appear to be all random (2 groups caused by a lack of data for those values
+-   The residuals vs fitted plot shows that they are linear and show homoscedasticity, there are two distinct groups, but this is due to limited data points between the values of 200 and 210
 
--   looks very normally distributed
+-   The normal Q-Q plot shows a close match to normality and so this definitely fits that assumption of the linear model
 
--   no particular;y bad outliers
+-   The scale-location plot potentially hints at a bit of heteroscedasticity, but I don't believe it is enough to violate the assumptions of the linear model when considering the other three plots
 
--   all very good and suitable
+-   The residuals vs leverage plot shows that there are no particularly influential outliers
+
+Overall, these plots demonstrate that none of the assumptions of the linear model have been broken and we can continue with the analyses [@whitlock2020analysis] .
 
 ```{r Statistical analysis}
 # statistical analysis of the linear model
 summary(Model)
 ```
 
--   very strong linear relationship between body mass and flipper length
-
--   for the same body mass they appear to all have the same flipper length for the points in the graph
-
--   however, there is a specific difference between that of chinstrap to the others in the relationship
+This shows that the relationship between body mass and flipper length is highly significant. It also shows that theinteraction between the body mass and chinstrap species factors is also significant. With the model being able to account for 85.53% of the variability [@whitlock2020analysis].
 
 ### Results & Discussion
+
+This means that All species show a linear relationship between body mass and flipper length. And that while the exact relationship is likely shared between Adelie and Gentoo penguins, the Chinstrap penguins appear to have a different relationship. These regression lines are shown in Figure 3.
 
 ```{r Plotting Results, warning=FALSE, message=FALSE}
 # displaying the coefficient for the linear regression
 RegLines <- coef(Model)
-paste("Adelie and Gentoo: y =", round(RegLines[2], 4), "* x +", round(RegLines[1], 4))
+paste("Adelie and Gentoo: y =", round(RegLines[2] , 4), "* x +", round(RegLines[1], 4))
 paste("Chinstrap: y =", round((RegLines[2] + RegLines[5]), 4), "* x +", round((RegLines[1] + RegLines[3]), 4))
 
 
@@ -257,14 +247,12 @@ scatterplot(penguins_MVF, penguins_MVF$body_mass_g,
                        "Body Mass (g)", 
                        penguins_MVF$flipper_length_mm, 
                        "Flipper Length (mm)", penguins_MVF$species, 
-                       "Species", "Body Mass vs Flipper Length", 
+                       "Species", "Linear regression: Body Mass vs Flipper Length", 
                        TRUE, "Results plot.svg", 5, 8, 1.05)
 
 ```
 
-![](Figures/Results plot.svg){width="671"}
-
--   
+![Figure 3: A graph showing the linear regression comparing flipper length to body mass in the three penguin species](Figures/Results%20plot.svg){width="671"}
 
 ### Conclusion
 
