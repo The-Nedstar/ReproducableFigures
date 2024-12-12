@@ -1003,6 +1003,6 @@
 <g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA=)'>
 <text x='261.22' y='351.58' text-anchor='middle' style='font-size: 14.00px; font-family: "Arial";' textLength='90.22px' lengthAdjust='spacingAndGlyphs'>Body Mass (g)</text>
 <text transform='translate(15.50,180.93) rotate(-90)' text-anchor='middle' style='font-size: 14.00px; font-family: "Arial";' textLength='125.99px' lengthAdjust='spacingAndGlyphs'>Flipper Length (mm)</text>
-<text x='29.29' y='19.97' style='font-size: 16.00px; font-family: "Arial";' textLength='206.31px' lengthAdjust='spacingAndGlyphs'>Body Mass vs Flipper Length</text>
+<text x='25.54' y='19.97' style='font-size: 16.00px; font-family: "Arial";' textLength='393.69px' lengthAdjust='spacingAndGlyphs'>Body Mass vs Flipper Length in Three Penguin Species</text>
 </g>
 </svg>

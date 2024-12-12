@@ -3,13 +3,15 @@ title: "Reproducable figures assignment"
 output:
   html_document: default
   pdf_document: default
+bibliography: references.bib
+no cite: '@wickham2023r'
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Initialization
+## Initialization 
 
 ```{r loading of packages and data, eval=TRUE, warning=FALSE, message=FALSE}
 # loading of premade R packages
@@ -66,7 +68,7 @@ scatter3D(penguins_clean$sample_number, penguins_clean$body_mass_g,log(penguins_
   dev.off()
 ```
 
-![Figure 1: A graph that shows stuff](Figures/Ugly graph.png){width="612"}
+![Figure 1: A graph that shows stuff](Figures/Ugly%20graph.png){width="612"}
 
 ### b) Write about how your design choices mislead the reader about the underlying data (200-300 words).
 
@@ -151,7 +153,7 @@ source(here("Functions", "penguins.R"))
 
 There is likely to be a positive relationship between body mass and flipper length. However, This relationship could take many forms, being linear, logarithmic, exponential etc. This relationship may be universal between all penguin species, or may be different for each species.
 
-This
+This analysis aims to understand the relationship between body mass and flipper length in multiple penguin species using the "Palmer Penguins" dataset. This data set contains 344 penguins from three species: Adelie, Chinstrap and Gentoo collected between 2007 and 2009 from the Palmer archipelago [@horst2022]. The Raw data is shown in Figure 1.
 
 ```{r Data Exploration, warning=FALSE, message=FALSE}
 # loading, cleaning and saving data
@@ -172,18 +174,28 @@ scatterplot(penguins_MVF, penguins_MVF$body_mass_g,
                        "Body Mass (g)", 
                        penguins_MVF$flipper_length_mm, 
                        "Flipper Length (mm)", penguins_MVF$species,
-                       "Species", "Body Mass vs Flipper Length", 
+                       "Species", "Body Mass vs Flipper Length in Three Penguin Species", 
                        FALSE, "Exploratory plot.svg", 5, 7, 1)
 
 ```
 
 ![](Figures/Exploratory%20plot.svg)
 
-There appears to be a strong linear relationship between the values of Body mass and Flipper length. This appears to be consistent between the species. This analysis is going to compare the relationship between body mass and flipper length and whether the species affects this relationship.
+From initial visualisation of the data, it appears that there is a strong linear correlation between the two variables with no variation between species.
 
 ### Hypothesis
 
+Our hypothesis is that there is a linear correlation between these two variables, and the relationship is the same between all three species in the dataset.
+
+To test this a multiple linear regression will be ran and an ANCOVA analysis with these hypotheses:
+
+H0: There is no relationship between body mass and flipper length (null model: y = 200.9152)
+
+H1: There is a linear relationship between body mass and flipper length, potentially varying between species (model as described by multiple linear regression)
+
 ### Statistical Methods
+
+First we created the multiple linear model and tested it's assumptions using the diagnostic plots in Figure 2.
 
 ```{r Statistics}
 # Creation of a linear model includingcomparing flipper length to body mass, species and the interaction between the two
@@ -200,33 +212,33 @@ DiaPlots <- (plot(Model,1) | plot(Model,2)) / (plot(Model,3) | plot(Model,5))
 dev.off()
 ```
 
-![](Figures/Diagnostic%20Plots.svg){width="660"}
+![Figure 2: Diagnostic plots for the linear model (flipper_length_mm \~ body_mass_g + species + body_mass_g\*species)](Figures/Diagnostic%20Plots.svg){width="660"}
 
--   Residuals appear to be all random (2 groups caused by a lack of data for those values
+-   The residuals vs fitted plot shows that they are linear and show homoscedasticity, there are two distinct groups, but this is due to limited data points between the values of 200 and 210
 
--   looks very normally distributed
+-   The normal Q-Q plot shows a close match to normality and so this definitely fits that assumption of the linear model
 
--   no particular;y bad outliers
+-   The scale-location plot potentially hints at a bit of heteroscedasticity, but I don't believe it is enough to violate the assumptions of the linear model when considering the other three plots
 
--   all very good and suitable
+-   The residuals vs leverage plot shows that there are no particularly influential outliers
+
+Overall, these plots demonstrate that none of the assumptions of the linear model have been broken and we can continue with the analyses [@whitlock2020analysis] .
 
 ```{r Statistical analysis}
 # statistical analysis of the linear model
 summary(Model)
 ```
 
--   very strong linear relationship between body mass and flipper length
-
--   for the same body mass they appear to all have the same flipper length for the points in the graph
-
--   however, there is a specific difference between that of chinstrap to the others in the relationship
+This shows that the relationship between body mass and flipper length is highly significant. It also shows that theinteraction between the body mass and chinstrap species factors is also significant. With the model being able to account for 85.53% of the variability [@whitlock2020analysis].
 
 ### Results & Discussion
+
+This means that All species show a linear relationship between body mass and flipper length. And that while the exact relationship is likely shared between Adelie and Gentoo penguins, the Chinstrap penguins appear to have a different relationship. These regression lines are shown in Figure 3.
 
 ```{r Plotting Results, warning=FALSE, message=FALSE}
 # displaying the coefficient for the linear regression
 RegLines <- coef(Model)
-paste("Adelie and Gentoo: y =", round(RegLines[2], 4), "* x +", round(RegLines[1], 4))
+paste("Adelie and Gentoo: y =", round(RegLines[2] , 4), "* x +", round(RegLines[1], 4))
 paste("Chinstrap: y =", round((RegLines[2] + RegLines[5]), 4), "* x +", round((RegLines[1] + RegLines[3]), 4))
 
 
@@ -235,14 +247,12 @@ scatterplot(penguins_MVF, penguins_MVF$body_mass_g,
                        "Body Mass (g)", 
                        penguins_MVF$flipper_length_mm, 
                        "Flipper Length (mm)", penguins_MVF$species, 
-                       "Species", "Body Mass vs Flipper Length", 
+                       "Species", "Linear regression: Body Mass vs Flipper Length", 
                        TRUE, "Results plot.svg", 5, 8, 1.05)
 
 ```
 
-![](Figures/Results%20plot.svg){width="671"}
-
--   
+![Figure 3: A graph showing the linear regression comparing flipper length to body mass in the three penguin species](Figures/Results%20plot.svg){width="671"}
 
 ### Conclusion
 
