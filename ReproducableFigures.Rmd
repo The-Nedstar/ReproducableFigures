@@ -191,7 +191,7 @@ From initial visualisation of the data, it appears that there is a strong linear
 
 Our hypothesis is that there is a linear correlation between these two variables, and the relationship is the same between all three species in the dataset.
 
-To test this a multiple linear regression will be ran and an ANCOVA analysis with these hypotheses:
+To test this a multiple linear regression will and an ANCOVA analysis will be run with these hypotheses:
 
 H~0~: There is no relationship between body mass and flipper length (null model: y = 200.9152)
 
@@ -242,7 +242,7 @@ This shows that the relationship between body mass and flipper length is highly 
 
 ### Results & Discussion
 
-This means that All species show a linear relationship between body mass and flipper length. And that while the exact relationship is likely shared between Adelie and Gentoo penguins, the Chinstrap penguins appear to have a different relationship. These regression lines are shown in Figure 3.
+This means that All species show a linear relationship between body mass and flipper length. And that while the exact relationship is likely shared between Adelie and Gentoo penguins, the Chinstrap penguins appear to have a different relationship. These regression lines are shown in Figure 3 and a summary of the results is shown in Figure 4.
 
 ```{r Plotting Results, warning=FALSE, message=FALSE}
 # displaying the coefficient for the linear regression
@@ -273,6 +273,12 @@ scatterplot(penguins_MVF, penguins_MVF$body_mass_g,
 : Figure 4: Table summarising the results of the analysis
 
 ### Conclusion
+
+This analysis demostrates the incredibly tight relationship between body mass and flipper length in these penguin species. This suggests the importance of having larger flippers to amassing a larger body mass. Larger flippers would allow for greater propulsion underwater and could potentially have other roles on land such as signalling, wheras flippers too large for their body could become an encumberance. Keeping these flippers consistent to their body mass must be important for these functions.
+
+The significant interaction between species and body mass in this analysis also shows that this relationship differs between different species. This suggests that different species place a greater or smaller importance on this relationship. This could be due to differences in development or lifestyles. Penguins which use their flippers more for communication may still want to maintain these larger flippers even with a lower mass, reducing the gradient of the relationship.
+
+With over 85% of the variability of penguin flipper sizes being able to be explained by body mass, species and the interaction between the two, these factors are the primary determinants of flipper size. More research is necessary to understand what the benefit of this relationship is and how it is maintained. Looking into more species and comparing the relationship between mass and flipper size to their lifestyles could give us more information about what benefits this relationship holds. And using a GWAS analysis on a variety of penguins with different flipper sizes we could understand some of the genetic mechanisms underpinning this interaction.
 
 ------------------------------------------------------------------------
 
