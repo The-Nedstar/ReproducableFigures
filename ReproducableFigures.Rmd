@@ -57,15 +57,12 @@ write.csv(penguins_clean, here("data","penguins_clean.csv"))
 
 ```{r bad figure code, echo=FALSE}
 
-### creation of quite possibly the worst graph known to man
-# setting up parameters for saving, had to use a png for this one as SVG
+### creation of quite possibly the worst graph known to humanity
+# setting up parameters for saving a beautiful crisp PNG
 png(filename = here("Figures", "Ugly graph.png"), 
-    width = 5, height = 5, units = "in", res = 300)
+    width = 5, height = 5, units = "in", res = 80)
 # Ugly, hard to follow code, with no breaking up or annotations just to rub in how terrible this is, this feels illegal
-scatter3D(penguins_clean$sample_number, penguins_clean$body_mass_g,log(penguins_clean$flipper_length_mm), colvar = penguins_clean$culmen_depth_mm, pch = 19, cex = 0.5, clab = "Culmen depth", xlab = "sample number",ylab = "Body mass", zlab = "flipper length", colkey = list(side = 4, plot = TRUE, length = 0.5, width = 1, dist = -0.25,shift = 0, addlines = FALSE, col.clab = NULL, cex.clab = par("cex.lab"),side.clab = NULL, line.clab = NULL, adj.clab = NULL, font.clab = NULL),
-          bg.col = "white",
-          col.panel = "white"
-            )
+scatter3D(penguins_clean$sample_number, penguins_clean$body_mass_g,log(penguins_clean$flipper_length_mm), colvar = penguins_clean$culmen_depth_mm, pch = 19, cex = 0.5, clab = "Culmen depth", xlab = "sample number",ylab = "Body mass", zlab = "flipper length", colkey = list(side = 4, plot = TRUE, length = 0.5, width = 1, dist = -0.25,shift = 0, addlines = FALSE, col.clab = NULL, cex.clab = par("cex.lab"),side.clab = NULL, line.clab = NULL, adj.clab = NULL, font.clab = NULL), bg.col = "white", col.panel = "white")
   dev.off()
 ```
 
@@ -75,47 +72,11 @@ scatter3D(penguins_clean$sample_number, penguins_clean$body_mass_g,log(penguins_
 
 *Include references.*
 
--   axis not starting at 0 (even though can't see
+This monstrosity is plotting Flipper length against body mass but makes a lot of classic graph errors making it almost impossible to see what's going on. First of all, there is very little information given about the graph. There is no title, and the caption underneath also provides no information about what the graph shows. The axes are poorly labelled, with no units or axis points, making it almost meaningless. The text is also at strange angles and often overlapping making it very difficult to read. The data itself is also very hard to read.
 
-    -   can exagerrate relationships
+The graph is three-dimensional and has no gridlines making the locations of points impossible to judge on any of the axes. One of the Values is shown through colour, which is difficult again to get qualitative readouts from, and inaccessible to colour-blind people. The legend for this colour completely covers some data points as well. None of these axes start from zero, even though you can't see this, which could exaggerate some relationships. The flipper length variable is also unnecessarily log-transformed, yet again, this is not mentioned anywhere. There is also just far too much unnecessary data thrown into one graph. The culmen depth does not need to be there and only confuses the reader as to the relationship between flipper length and body mass. And sample number isn't a proper reading and also shouldn't be there.
 
-    -   obscures truth
-
-    -   all 3 axis on different scales
-
-    -   log transform
-
--   legend covering up the graph
-
--   too much data
-
-    -   2 different relationships being shown, can't see either clearly at all
-
-    -   plotting the sample number that gives no information whatsoever
-
--   hard to read
-
-    -   no grid lines
-
-    -   3 dimensional makes it impossible
-
-    -   using colours can't get quantitative view of
-
-    -   bad for colour blind people
-
-    -   very small
-
--   labels
-
-    -   no title
-
-    -   no axis points
-
-    -   overlapping text
-
-    -   text at strange angles which is hard to read
-
-    -   unhelpful figure label
+Finally, the graph is coded terribly. No annotations or splitting up of the code makes it very difficult to read and edit. There are lots of unnecessary bits of code making it inefficient. And it outputs a terrible, low-quality PNG as the icing on the cake making an already terrible graph even harder to see. I can only apologize for what I have produced.
 
 ------------------------------------------------------------------------
 
