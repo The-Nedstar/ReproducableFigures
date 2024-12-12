@@ -557,9 +557,11 @@ scatterplot(penguins_MVF, penguins_MVF$body_mass_g,
 comparing flipper length to body mass in the three penguin species
 within the palmer penguin dataset</div>
 </div>
+<p>-</p>
 <p>From initial visualisation of the data, it appears that there is a
 strong linear correlation between the two variables with no variation
 between species.</p>
+<p>-</p>
 </div>
 <div id="hypothesis" class="section level3">
 <h3>Hypothesis</h3>
@@ -568,11 +570,12 @@ two variables, and the relationship is the same between all three
 species in the dataset.</p>
 <p>To test this a multiple linear regression will be ran and an ANCOVA
 analysis with these hypotheses:</p>
-<p>H0: There is no relationship between body mass and flipper length
-(null model: y = 200.9152)</p>
-<p>H1: There is a linear relationship between body mass and flipper
-length, potentially varying between species (model as described by
-multiple linear regression)</p>
+<p>H<sub>0</sub>: There is no relationship between body mass and flipper
+length (null model: y = 200.9152)</p>
+<p>H<sub>1</sub>: There is a linear relationship between body mass and
+flipper length, potentially varying between species (model as described
+by multiple linear regression)</p>
+<p>-</p>
 </div>
 <div id="statistical-methods" class="section level3">
 <h3>Statistical Methods</h3>
@@ -596,6 +599,7 @@ dev.off()</code></pre>
 <div class="figcaption">Figure 2: Diagnostic plots for the linear model
 (flipper_length_mm ~ body_mass_g + species + body_mass_g*species)</div>
 </div>
+<p>-</p>
 <ul>
 <li><p>The residuals vs fitted plot shows that they are linear and show
 homoscedasticity, there are two distinct groups, but this is due to
@@ -641,6 +645,7 @@ summary(Model)</code></pre>
 is highly significant. It also shows that theinteraction between the
 body mass and chinstrap species factors is also significant. With the
 model being able to account for 85.53% of the variability <span class="citation">(Whitlock and Schluter 2020)</span>.</p>
+<p>-</p>
 </div>
 <div id="results-discussion" class="section level3">
 <h3>Results &amp; Discussion</h3>
@@ -669,6 +674,43 @@ scatterplot(penguins_MVF, penguins_MVF$body_mass_g,
 <div class="figcaption">Figure 3: A graph showing the linear regression
 comparing flipper length to body mass in the three penguin species</div>
 </div>
+<p>-</p>
+<table>
+<caption>Figure 4: Table summarising the results of the
+analysis</caption>
+<colgroup>
+<col width="35%" />
+<col width="14%" />
+<col width="23%" />
+<col width="13%" />
+<col width="13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Effect</th>
+<th>Estimate</th>
+<th>Standard Error</th>
+<th>T value</th>
+<th>P value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Body mass</td>
+<td>6.677e-3</td>
+<td>9.523e-4</td>
+<td>7.011</td>
+<td>1.3e-11</td>
+</tr>
+<tr class="even">
+<td>Body mass * Chinstrap</td>
+<td>5.228e-3</td>
+<td>1.949e-3</td>
+<td>2.683</td>
+<td>0.00766</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="conclusion" class="section level3">
 <h3>Conclusion</h3>
@@ -767,6 +809,7 @@ importance of clear variable names, although I thought theirs were too
 long, they really struggled to understand any of mine as they were too
 truncated. Finding the balance between useability and understandability
 is vital for other people to use and modify your code.</p>
+<hr />
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-horst2022" class="csl-entry">
 Horst, Allison M., Alison Presmanes Hill, and Kristen B. Gorman. 2022.

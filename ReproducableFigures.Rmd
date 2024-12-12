@@ -181,7 +181,11 @@ scatterplot(penguins_MVF, penguins_MVF$body_mass_g,
 
 ![Figure 1: Exploratory plot showing the raw data comparing flipper length to body mass in the three penguin species within the palmer penguin dataset](Figures/Exploratory plot.png){width="700"}
 
+\-
+
 From initial visualisation of the data, it appears that there is a strong linear correlation between the two variables with no variation between species.
+
+\-
 
 ### Hypothesis
 
@@ -189,9 +193,11 @@ Our hypothesis is that there is a linear correlation between these two variables
 
 To test this a multiple linear regression will be ran and an ANCOVA analysis with these hypotheses:
 
-H0: There is no relationship between body mass and flipper length (null model: y = 200.9152)
+H~0~: There is no relationship between body mass and flipper length (null model: y = 200.9152)
 
-H1: There is a linear relationship between body mass and flipper length, potentially varying between species (model as described by multiple linear regression)
+H~1~: There is a linear relationship between body mass and flipper length, potentially varying between species (model as described by multiple linear regression)
+
+\-
 
 ### Statistical Methods
 
@@ -213,6 +219,8 @@ dev.off()
 
 ![Figure 2: Diagnostic plots for the linear model (flipper_length_mm \~ body_mass_g + species + body_mass_g\*species)](Figures/Diagnostic Plots.png){width="700"}
 
+\-
+
 -   The residuals vs fitted plot shows that they are linear and show homoscedasticity, there are two distinct groups, but this is due to limited data points between the values of 200 and 210
 
 -   The normal Q-Q plot shows a close match to normality and so this definitely fits that assumption of the linear model
@@ -229,6 +237,8 @@ summary(Model)
 ```
 
 This shows that the relationship between body mass and flipper length is highly significant. It also shows that theinteraction between the body mass and chinstrap species factors is also significant. With the model being able to account for 85.53% of the variability [@whitlock2020analysis].
+
+\-
 
 ### Results & Discussion
 
@@ -252,6 +262,15 @@ scatterplot(penguins_MVF, penguins_MVF$body_mass_g,
 ```
 
 ![Figure 3: A graph showing the linear regression comparing flipper length to body mass in the three penguin species](Figures/Results plot.png){width="700"}
+
+\-
+
+| Effect                 | Estimate | Standard Error | T value | P value |
+|------------------------|----------|----------------|---------|---------|
+| Body mass              | 6.677e-3 | 9.523e-4       | 7.011   | 1.3e-11 |
+| Body mass \* Chinstrap | 5.228e-3 | 1.949e-3       | 2.683   | 0.00766 |
+
+: Figure 4: Table summarising the results of the analysis
 
 ### Conclusion
 
@@ -294,3 +313,5 @@ One issue with my code was the plot3D library. They were running the project on 
 They liked the functions structure that I used and I was glad that they still worked when the inputs and environment had been modified making them reusable. The graph function in particular was very easy for them to modify how the graph would look without needing to open the functions file at all which I was very pleased with. However, when opening the function itself they found it quite overwhelming, not understanding some of the more complex code such as the if statements making it difficult for someone with limited coding experience to modify.
 
 I've learnt that creation of many functions that can be used in a variety of settings is really important for code reproducability. Trying to modify their figures compared to watching them modify mine showed the power of versatile functions. And I wish I had doubled down on this aspect of the function so it could be varied even further without needing to open the file containing the function. I also learnt the importance of clear variable names, although I thought theirs were too long, they really struggled to understand any of mine as they were too truncated. Finding the balance between useability and understandability is vital for other people to use and modify your code.
+
+------------------------------------------------------------------------
