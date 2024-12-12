@@ -149,6 +149,10 @@ source(here("Functions", "penguins.R"))
 
 ### Introduction
 
+There is likely to be a positive relationship between body mass and flipper length. However, This relationship could take many forms, being linear, logarithmic, exponential etc. This relationship may be universal between all penguin species, or may be different for each species.
+
+This
+
 ```{r Data Exploration, warning=FALSE, message=FALSE}
 # loading, cleaning and saving data
 write.csv(penguins_raw, here("Data", "penguins_raw.csv"))
