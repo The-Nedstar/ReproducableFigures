@@ -71,15 +71,19 @@ scatter3D(penguins_clean$sample_number, penguins_clean$body_mass_g,log(penguins_
 
 ![Figure 1: A graph that shows stuff](Figures/Ugly%20graph.png){width="612"}
 
+\|
+
 ### b) Write about how your design choices mislead the reader about the underlying data (200-300 words).
 
 *Include references.*
 
-This monstrosity is plotting Flipper length against body mass but makes a lot of classic graph errors making it almost impossible to see what's going on. First of all, there is very little information given about the graph. There is no title, and the caption underneath also provides no information about what the graph shows. The axes are poorly labelled, with no units or axis points, making it almost meaningless. The text is also at strange angles and often overlapping making it very difficult to read. The data itself is also very hard to read.
+This monstrosity is plotting Flipper length against body mass but makes a lot of classic graph errors making it almost impossible to see what's going on. First of all, there is very little information given about the graph [@boyd_graph_badly]. There is no title, and the caption underneath also provides no information about what the graph shows. The axes are poorly labelled, with no units or axis points, so the magnitude is elusive [@TuringRDS]. The text is also at strange angles and often overlapping making it very difficult to read. The data itself is also very hard to read.
 
-The graph is three-dimensional and has no gridlines making the locations of points impossible to judge on any of the axes. One of the Values is shown through colour, which is difficult again to get qualitative readouts from, and inaccessible to colour-blind people. The legend for this colour completely covers some data points as well. None of these axes start from zero, even though you can't see this, which could exaggerate some relationships. The flipper length variable is also unnecessarily log-transformed, yet again, this is not mentioned anywhere. There is also just far too much unnecessary data thrown into one graph. The culmen depth does not need to be there and only confuses the reader as to the relationship between flipper length and body mass. And sample number isn't a proper reading and also shouldn't be there.
+The graph is three-dimensional and has no gridlines making the locations of points impossible to judge on any of the axes. One of the Values is shown through colour, which is difficult again to get qualitative readouts from, and inaccessible to colour-blind people. The legend for this colour completely covers some data points as well [@woolston2014]. None of these axes start from zero, even though you can't see this, which could exaggerate some relationships [@TuringRDS]. The flipper length variable is also unnecessarily log-transformed, yet again, this is not mentioned anywhere. There is also just far too much unnecessary data thrown into one graph [@TuringRDS]. The culmen depth does not need to be there and only confuses the reader as to the relationship between flipper length and body mass. And sample number isn't a proper reading and also shouldn't be there.
 
-Finally, the graph is coded terribly. No annotations or splitting up of the code makes it very difficult to read and edit. There are lots of unnecessary bits of code making it inefficient. And it outputs a terrible, low-quality PNG as the icing on the cake making an already terrible graph even harder to see. I can only apologize for what I have produced.
+Finally, the graph is coded terribly. No annotations or splitting up of the code makes it very difficult to read and edit [@yurisich2024]. There are lots of unnecessary bits of code making it inefficient. And it outputs a terrible, low-quality PNG as the icing on the cake making an already terrible graph even harder to see. I can only apologize for what I have produced.
+
+\|
 
 ------------------------------------------------------------------------
 
@@ -181,23 +185,23 @@ scatterplot(penguins_MVF, penguins_MVF$body_mass_g,
 
 ![Figure 1: Exploratory plot showing the raw data comparing flipper length to body mass in the three penguin species within the palmer penguin dataset](Figures/Exploratory plot.png){width="700"}
 
-\-
+\|
 
 From initial visualisation of the data, it appears that there is a strong linear correlation between the two variables with no variation between species.
 
-\-
+\|
 
 ### Hypothesis
 
 Our hypothesis is that there is a linear correlation between these two variables, and the relationship is the same between all three species in the dataset.
 
-To test this a multiple linear regression will be ran and an ANCOVA analysis with these hypotheses:
+To test this a multiple linear regression will and an ANCOVA analysis will be run with these hypotheses:
 
 H~0~: There is no relationship between body mass and flipper length (null model: y = 200.9152)
 
 H~1~: There is a linear relationship between body mass and flipper length, potentially varying between species (model as described by multiple linear regression)
 
-\-
+\|
 
 ### Statistical Methods
 
@@ -219,7 +223,7 @@ dev.off()
 
 ![Figure 2: Diagnostic plots for the linear model (flipper_length_mm \~ body_mass_g + species + body_mass_g\*species)](Figures/Diagnostic Plots.png){width="700"}
 
-\-
+\|
 
 -   The residuals vs fitted plot shows that they are linear and show homoscedasticity, there are two distinct groups, but this is due to limited data points between the values of 200 and 210
 
@@ -238,11 +242,11 @@ summary(Model)
 
 This shows that the relationship between body mass and flipper length is highly significant. It also shows that theinteraction between the body mass and chinstrap species factors is also significant. With the model being able to account for 85.53% of the variability [@whitlock2020analysis].
 
-\-
+\|
 
 ### Results & Discussion
 
-This means that All species show a linear relationship between body mass and flipper length. And that while the exact relationship is likely shared between Adelie and Gentoo penguins, the Chinstrap penguins appear to have a different relationship. These regression lines are shown in Figure 3.
+This means that All species show a linear relationship between body mass and flipper length. And that while the exact relationship is likely shared between Adelie and Gentoo penguins, the Chinstrap penguins appear to have a different relationship. These regression lines are shown in Figure 3 and a summary of the results is shown in Figure 4.
 
 ```{r Plotting Results, warning=FALSE, message=FALSE}
 # displaying the coefficient for the linear regression
@@ -263,7 +267,7 @@ scatterplot(penguins_MVF, penguins_MVF$body_mass_g,
 
 ![Figure 3: A graph showing the linear regression comparing flipper length to body mass in the three penguin species](Figures/Results plot.png){width="700"}
 
-\-
+\|
 
 | Effect                 | Estimate | Standard Error | T value | P value |
 |------------------------|----------|----------------|---------|---------|
@@ -273,6 +277,12 @@ scatterplot(penguins_MVF, penguins_MVF$body_mass_g,
 : Figure 4: Table summarising the results of the analysis
 
 ### Conclusion
+
+This analysis demonstrates the incredibly tight relationship between body mass and flipper length in these penguin species. This suggests the importance of having larger flippers to amass a larger body mass. Larger flippers would allow for greater propulsion underwater and could have other roles on land such as signalling. It also suggests when body mass is smaller, flippers too large could become an encumbrance. Larger flippers use up more recourses to create and keeping flippers consistent with their overall body size could be important for these functions.
+
+The significant interaction between species and body mass in this analysis also shows that this relationship differs between species. This suggests that other species place a greater or smaller importance on this relationship. This could be due to differences in development or lifestyles. Penguins which use their flippers more for communication may still want to maintain these larger flippers even with a lower mass, reducing the steepness of the gradient of the relationship.
+
+With over 85% of the variability of penguin flipper sizes being explained by body mass, species and the interaction between the two, these factors are the primary determinants of flipper size. More research is necessary to understand what the benefit of this relationship is and how it is maintained. Looking into more species and comparing the relationship between mass and flipper size to their lifestyles could give us more information about what benefits this relationship holds. And using a GWAS analysis on a variety of penguins with different flipper sizes we could understand some of the genetic mechanisms underpinning this interaction.
 
 ------------------------------------------------------------------------
 
@@ -304,6 +314,8 @@ I think some of their code was a bit inefficient in areas. There was quite a bit
 
 The graphs where quite difficult to alter with only the dataset being called by the function. The only thing you can edit is the dataset that the graph is based on, but becuase nothing else can change it is incredibly unlikely that the graph would function with a different dataset input, so there is essentially nothing that can be changed without editing the function itself. Inside the function it is very easy to follow and changes can be made easily, but it takes a long time to go back and forward between the function file and the markdown file where the function is used to change and test diffferent things. If I wanted to create a new graph using the same function without replacing the old graph, then a whole new function would need to be created without editing the old function, this is very inefficient. This is the main aspect of the code which I would change, otherwise It functioned very well and was clearly laid out.
 
+\|
+
 ### d) Reflect on your own code based on your experience with your partner's code and their review of yours. (300-500 words)
 
 They said that my code also ran easily and was well annotated. I think they were happy with the overall layout, wording and annotation. Except the block titled "DO NOT TOUCH" which they did touch and said it wasn't seperated and labelled clearly enough. Potentially I shouldn't have included this at all, as if renv had not been restored before someone ran it then it would delete all of the packages and they would have to be installed again, not good.
@@ -313,5 +325,7 @@ One issue with my code was the plot3D library. They were running the project on 
 They liked the functions structure that I used and I was glad that they still worked when the inputs and environment had been modified making them reusable. The graph function in particular was very easy for them to modify how the graph would look without needing to open the functions file at all which I was very pleased with. However, when opening the function itself they found it quite overwhelming, not understanding some of the more complex code such as the if statements making it difficult for someone with limited coding experience to modify.
 
 I've learnt that creation of many functions that can be used in a variety of settings is really important for code reproducability. Trying to modify their figures compared to watching them modify mine showed the power of versatile functions. And I wish I had doubled down on this aspect of the function so it could be varied even further without needing to open the file containing the function. I also learnt the importance of clear variable names, although I thought theirs were too long, they really struggled to understand any of mine as they were too truncated. Finding the balance between useability and understandability is vital for other people to use and modify your code.
+
+\|
 
 ------------------------------------------------------------------------
